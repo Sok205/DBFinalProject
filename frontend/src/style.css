@@ -1,96 +1,191 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Titillium+Web:wght@400;600;700;900&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+@theme {
+  /* F1 Racing colors */
+  --color-f1-red: #E10600;
+  --color-f1-red-dark: #B00500;
+  --color-f1-black: #15151E;
+  --color-f1-black-light: #1F1F2B;
+  --color-f1-white: #FFFFFF;
+  --color-f1-silver: #C0C0C0;
+  --color-f1-silver-dark: #A8A8A8;
+  --color-f1-carbon: #2D2D2D;
+  --color-f1-carbon-light: #3D3D3D;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+  /* Status colors */
+  --color-status-good: #00D26A;
+  --color-status-good-dark: #00A854;
+  --color-status-warning: #FFB800;
+  --color-status-warning-dark: #CC9300;
+  --color-status-critical: #FF3333;
+  --color-status-critical-dark: #CC2929;
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
+  /* Accent colors */
+  --color-accent-gold: #FFD700;
+  --color-accent-gold-dark: #B8860B;
+  --color-accent-blue: #0066FF;
+  --color-accent-blue-dark: #0052CC;
 
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
-}
+  /* Font families */
+  --font-family-racing: 'Titillium Web', system-ui, sans-serif;
+  --font-family-mono: 'JetBrains Mono', 'Courier New', monospace;
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
+  /* Box shadows */
+  --shadow-f1: 0 4px 20px rgba(225, 6, 0, 0.3);
+  --shadow-f1-hover: 0 8px 30px rgba(225, 6, 0, 0.4);
+  --shadow-card: 0 4px 6px rgba(0, 0, 0, 0.3);
+  --shadow-card-hover: 0 8px 25px rgba(0, 0, 0, 0.4);
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #3178c6aa);
+  /* Animations */
+  --animate-pulse-fast: pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-slide-in: slideIn 0.3s ease-out;
+  --animate-fade-in: fadeIn 0.3s ease-out;
 }
 
-.card {
-  padding: 2em;
+@keyframes slideIn {
+  0% { transform: translateY(-10px); opacity: 0; }
+  100% { transform: translateY(0); opacity: 1; }
 }
 
-.read-the-docs {
-  color: #888;
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
 
-@media (prefers-color-scheme: light) {
   :root {
-    color: #213547;
-    background-color: #ffffff;
+    font-family: 'Titillium Web', system-ui, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+    color: #FFFFFF;
+    background-color: #15151E;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    background: linear-gradient(180deg, #15151E 0%, #1F1F2B 100%);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    line-height: 1.2;
+    font-weight: 700;
+  }
+
+  p {
+    margin: 0;
+  }
+
+  a {
+    color: #E10600;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
   a:hover {
-    color: #747bff;
+    color: #FF3333;
   }
+
   button {
-    background-color: #f9f9f9;
+    cursor: pointer;
+    font-family: inherit;
+  }
+}
+
+@layer components {
+  /* Racing stripe decorations */
+  .racing-stripe {
+    @apply relative overflow-hidden;
+  }
+
+  .racing-stripe::before {
+    content: '';
+    @apply absolute top-0 left-0 w-1 h-full bg-f1-red;
+  }
+
+  /* Checkered flag pattern */
+  .checkered-pattern {
+    background-image:
+      linear-gradient(45deg, #2D2D2D 25%, transparent 25%),
+      linear-gradient(-45deg, #2D2D2D 25%, transparent 25%),
+      linear-gradient(45deg, transparent 75%, #2D2D2D 75%),
+      linear-gradient(-45deg, transparent 75%, #2D2D2D 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+  }
+
+  /* Carbon fiber texture */
+  .carbon-texture {
+    background-color: #2D2D2D;
+    background-image:
+      linear-gradient(30deg, #1F1F2B 12%, transparent 12.5%, transparent 87%, #1F1F2B 87.5%, #1F1F2B),
+      linear-gradient(150deg, #1F1F2B 12%, transparent 12.5%, transparent 87%, #1F1F2B 87.5%, #1F1F2B),
+      linear-gradient(30deg, #1F1F2B 12%, transparent 12.5%, transparent 87%, #1F1F2B 87.5%, #1F1F2B),
+      linear-gradient(150deg, #1F1F2B 12%, transparent 12.5%, transparent 87%, #1F1F2B 87.5%, #1F1F2B),
+      linear-gradient(60deg, #252530 25%, transparent 25.5%, transparent 75%, #252530 75%, #252530),
+      linear-gradient(60deg, #252530 25%, transparent 25.5%, transparent 75%, #252530 75%, #252530);
+    background-size: 20px 35px;
+    background-position: 0 0, 0 0, 10px 18px, 10px 18px, 0 0, 10px 18px;
+  }
+
+  /* Glowing text effect */
+  .glow-text {
+    text-shadow: 0 0 10px rgba(225, 6, 0, 0.5), 0 0 20px rgba(225, 6, 0, 0.3);
+  }
+
+  /* Speed lines animation */
+  @keyframes speed-lines {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  .speed-line {
+    @apply absolute h-0.5 bg-gradient-to-r from-transparent via-f1-red to-transparent opacity-30;
+    animation: speed-lines 2s linear infinite;
+  }
+}
+
+@layer utilities {
+  /* Custom scrollbar with F1 theme */
+  .scrollbar-f1::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  .scrollbar-f1::-webkit-scrollbar-track {
+    background: #1F1F2B;
+    border-radius: 4px;
+  }
+
+  .scrollbar-f1::-webkit-scrollbar-thumb {
+    background: #E10600;
+    border-radius: 4px;
+  }
+
+  .scrollbar-f1::-webkit-scrollbar-thumb:hover {
+    background: #FF3333;
+  }
+
+  /* Clip path for angular F1 shapes */
+  .clip-f1 {
+    clip-path: polygon(0 0, 100% 0, 100% calc(100% - 16px), calc(100% - 16px) 100%, 0 100%);
+  }
+
+  .clip-f1-reverse {
+    clip-path: polygon(16px 0, 100% 0, 100% 100%, 0 100%, 0 16px);
   }
 }
