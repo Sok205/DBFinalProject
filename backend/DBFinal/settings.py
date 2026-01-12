@@ -11,25 +11,9 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 import os
-import re
+import dj_database_url
 from pathlib import Path
 from dotenv import load_dotenv
-
-
-def parse_database_url(url):
-    """Parse DATABASE_URL into Django database config."""
-    pattern = r'postgres(?:ql)?://(?P<user>[^:]+):(?P<password>[^@]+)@(?P<host>[^:/]+):(?P<port>\d+)/(?P<name>.+)'
-    match = re.match(pattern, url)
-    if match:
-        return {
-            'ENGINE': 'django.db.backends.postgresql',
-            'NAME': match.group('name'),
-            'USER': match.group('user'),
-            'PASSWORD': match.group('password'),
-            'HOST': match.group('host'),
-            'PORT': match.group('port'),
-        }
-    return None
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -107,11 +91,17 @@ WSGI_APPLICATION = 'DBFinal.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/6.0/ref/settings/#databases
 
-# Support Railway's DATABASE_URL or individual env vars
-DATABASE_URL = os.getenv('DATABASE_URL')
-if DATABASE_URL:
-    DATABASES = {'default': parse_database_url(DATABASE_URL)}
-else:
+# Database configuration
+DATABASES = {
+    'default': dj_database_url.config(
+        default=os.getenv('DATABASE_URL'),
+        conn_max_age=600,
+        ssl_require=False  # Railway doesn't require it internally
+    )
+}
+
+# Fallback to individual variables if DATABASE_URL is not provided by dj-database-url
+if not DATABASES['default']:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',

@@ -45,10 +45,16 @@ fi
 
 echo "Running migrations..."
 if [ "$FORCE_MIGRATE" = "true" ]; then
-    echo "FORCE_MIGRATE is true. Resetting garage migration state..."
+    echo "!!! FORCE_MIGRATE is true. Resetting all garage migrations !!!"
     python manage.py migrate garage zero --noinput
 fi
-python manage.py migrate --noinput
+
+# We use --fake-initial to allow Django to skip table creation if they somehow exist, 
+# or create them if they don't, while keeping the migration history in sync.
+python manage.py migrate --noinput --fake-initial
+
+echo "Migration status:"
+python manage.py showmigrations garage
 
 echo "Collecting static files..."
 python manage.py collectstatic --noinput
