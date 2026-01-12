@@ -9,7 +9,6 @@ class Team(models.Model):
 
     class Meta:
         db_table = 'team'
-        managed = False
 
     def __str__(self):
         return self.name
@@ -30,7 +29,6 @@ class Person(models.Model):
 
     class Meta:
         db_table = 'person'
-        managed = False
 
     def __str__(self):
         return f"{self.first_name} {self.last_name}"
@@ -49,7 +47,6 @@ class Garage(models.Model):
 
     class Meta:
         db_table = 'garage'
-        managed = False
 
     def __str__(self):
         return f"{self.team.name} - {self.location} ({self.season_year})"
@@ -68,7 +65,6 @@ class GarageBay(models.Model):
 
     class Meta:
         db_table = 'garage_bay'
-        managed = False
 
     def __str__(self):
         return f"Bay {self.bay_number} - {self.garage.location}"
@@ -88,7 +84,6 @@ class Car(models.Model):
 
     class Meta:
         db_table = 'car'
-        managed = False
 
     def __str__(self):
         return f"Car #{self.car_number} - {self.chassis_number}"
@@ -103,7 +98,6 @@ class Part(models.Model):
 
     class Meta:
         db_table = 'part'
-        managed = False
 
     def __str__(self):
         return f"{self.part_type} - {self.serial_number}"
@@ -129,7 +123,6 @@ class CarPart(models.Model):
 
     class Meta:
         db_table = 'car_part'
-        managed = False
 
     def __str__(self):
         return f"{self.part.part_type} on {self.car}"
@@ -143,7 +136,6 @@ class Session(models.Model):
 
     class Meta:
         db_table = 'session'
-        managed = False
 
     def __str__(self):
         return f"{self.race_name} - {self.session_type}"
@@ -175,7 +167,6 @@ class CarSession(models.Model):
 
     class Meta:
         db_table = 'car_session'
-        managed = False
 
     def __str__(self):
         return f"{self.car} - {self.session}"
@@ -195,7 +186,6 @@ class TelemetrySession(models.Model):
 
     class Meta:
         db_table = 'telemetry_session'
-        managed = False
 
     def __str__(self):
         return f"Telemetry for {self.car_session}"
@@ -223,7 +213,6 @@ class WorkOrder(models.Model):
 
     class Meta:
         db_table = 'work_order'
-        managed = False
 
     def __str__(self):
         return f"Work Order #{self.work_order_id} - {self.car}"
@@ -247,7 +236,6 @@ class WorkAssignment(models.Model):
 
     class Meta:
         db_table = 'work_assignment'
-        managed = False
 
     def __str__(self):
         return f"{self.person} - {self.work_order}"
