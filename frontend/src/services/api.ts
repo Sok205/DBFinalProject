@@ -9,6 +9,7 @@ import type {
   PartFilters,
   CarPartFilters,
   CarFilters,
+  OpenF1Session,
 } from '../types/models';
 
 const buildQueryString = (filters: Record<string, any>): string => {
@@ -79,4 +80,9 @@ export const fetchActiveCarParts = async (): Promise<PaginatedResponse<CarPart>>
 
 export const fetchCarPartHistory = async (carId: number): Promise<PaginatedResponse<CarPart>> => {
   return api.get(`/api/car-parts/by-car/${carId}/`);
+};
+
+export const fetchF1Schedule = async (year: number = 2026): Promise<OpenF1Session[]> => {
+  const response = await fetch(`https://api.openf1.org/v1/sessions?year=${year}`);
+  return response.json();
 };

@@ -1,0 +1,62 @@
+# Git
+.git
+.gitignore
+.github
+
+# Python
+**/__pycache__
+**/*.pyc
+**/*.pyo
+**/*.pyd
+**/.Python
+**/pip-log.txt
+**/pip-delete-this-directory.txt
+**/.pytest_cache
+**/.coverage
+**/htmlcov
+**/*.egg-info
+**/dist
+**/build
+
+# Virtual Environments
+backend/.venv
+backend/venv
+backend/ENV
+
+# Database
+backend/db.sqlite3
+backend/*.sqlite3
+
+# Node
+frontend/node_modules
+frontend/dist
+frontend/.vite
+
+# Environment
+**/.env
+**/.env.local
+backend/.env
+
+# IDE
+.vscode
+.idea
+**/*.swp
+**/*.swo
+**/*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Documentation
+*.md
+!README.md
+
+# Docker
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Misc
+.plan
+*.log

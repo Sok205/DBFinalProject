@@ -1,3 +1,17 @@
+# Multi-stage build for F1 Garage Management Dashboard
+
+# Stage 1: Build Frontend
+FROM node:20-alpine AS frontend-builder
+
+WORKDIR /frontend
+
+COPY frontend/package*.json ./
+RUN npm ci
+
+COPY frontend/ ./
+RUN npm run build
+
+# Stage 2: Backend with Frontend
 FROM python:3.13-slim
 
 ENV PYTHONUNBUFFERED=1 \
@@ -13,15 +27,17 @@ RUN apt-get update && \
     netcat-openbsd \
     && rm -rf /var/lib/apt/lists/*
 
-COPY pyproject.toml ./
+COPY backend/pyproject.toml ./
 RUN pip install uv && \
     uv pip install --system -r pyproject.toml
 
-COPY . .
+COPY backend/ ./
 
-# Create static directory and ensure entrypoint is executable
-RUN mkdir -p /app/static /app/staticfiles && \
-    chmod +x /app/entrypoint.sh
+RUN mkdir -p /app/static/frontend
+
+COPY --from=frontend-builder /frontend/dist ./static/frontend
+
+RUN chmod +x /app/entrypoint.sh
 
 EXPOSE 8000
 
