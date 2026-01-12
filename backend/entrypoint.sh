@@ -43,14 +43,19 @@ if [ $? -ne 0 ]; then
     exit 1
 fi
 
+# Run migrations
 echo "Running migrations..."
 if [ "$FORCE_MIGRATE" = "true" ]; then
     echo "!!! FORCE_MIGRATE is true. NUKING DATABASE SCHEMA FOR FRESH START !!!"
     python manage.py shell -c "from django.db import connection; cursor = connection.cursor(); cursor.execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO public;'); print('Schema wiped!')"
 fi
 
-# Run migrate without --fake-initial to ensure tables are actually created
 python manage.py migrate --noinput
+
+if [ "$LOAD_DATA" = "true" ]; then
+    echo "LOAD_DATA is true. Loading exemplary F1 data..."
+    python manage.py load_f1_data
+fi
 
 echo "Migration status:"
 python manage.py showmigrations garage
