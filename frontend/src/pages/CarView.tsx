@@ -41,26 +41,8 @@ const CarView: Component = () => {
   };
 
   return (
-    <div class="min-h-screen bg-gradient-to-b from-f1-black to-f1-black-light">
-      {/* Navigation Bar */}
-      <nav class="border-b border-f1-carbon-light bg-f1-carbon/50 backdrop-blur-sm sticky top-0 z-50">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-4">
-          <A
-            href="/"
-            class="inline-flex items-center gap-2 text-f1-silver hover:text-f1-red transition-colors group"
-          >
-            <svg
-              class="w-5 h-5 transform group-hover:-translate-x-1 transition-transform"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
-            </svg>
-            <span class="font-semibold uppercase tracking-wider text-sm">Back to Dashboard</span>
-          </A>
-        </div>
-      </nav>
+    <div class="space-y-8">
+      {/* Loading State */}
 
       {/* Loading State */}
       <Show when={loading()}>
@@ -88,7 +70,7 @@ const CarView: Component = () => {
 
       {/* Car Details */}
       <Show when={car()}>
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+        <div class="py-4">
           {/* Header Card */}
           <div class="bg-f1-carbon border border-f1-carbon-light rounded-lg overflow-hidden shadow-card mb-8">
             {/* Racing Header */}

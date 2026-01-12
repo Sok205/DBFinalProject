@@ -97,49 +97,58 @@ const PartList: Component = () => {
   };
 
   return (
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="h-full">
       {/* Filter Bar */}
-      <div class="bg-f1-carbon border border-f1-carbon-light rounded-lg p-4 sm:p-6 mb-6 shadow-card">
-        <div class="flex flex-col gap-4">
-          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <Input
-              type="text"
-              placeholder="Search by serial, type..."
-              value={searchTerm()}
-              onInput={(e) => setSearchTerm(e.currentTarget.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              fullWidth
-            />
+      <div class="bg-f1-carbon/50 border border-f1-carbon-light rounded-lg p-6 mb-8 shadow-card backdrop-blur-sm">
+        <div class="flex flex-col gap-6">
+          <div class="flex flex-wrap items-end gap-6">
+            <div class="flex-1 min-w-[240px]">
+              <Input
+                label="Search"
+                type="text"
+                placeholder="Serial number or type..."
+                value={searchTerm()}
+                onInput={(e) => setSearchTerm(e.currentTarget.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                fullWidth
+              />
+            </div>
 
-            <Input
-              type="text"
-              placeholder="Filter by type"
-              value={selectedType()}
-              onInput={(e) => setSelectedType(e.currentTarget.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              fullWidth
-            />
+            <div class="flex-1 min-w-[200px]">
+              <Input
+                label="Part Type"
+                type="text"
+                placeholder="e.g. Front Wing"
+                value={selectedType()}
+                onInput={(e) => setSelectedType(e.currentTarget.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                fullWidth
+              />
+            </div>
 
-            <Input
-              type="text"
-              placeholder="Filter by manufacturer"
-              value={selectedManufacturer()}
-              onInput={(e) => setSelectedManufacturer(e.currentTarget.value)}
-              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-              fullWidth
-            />
+            <div class="flex-1 min-w-[200px]">
+              <Input
+                label="Manufacturer"
+                type="text"
+                placeholder="e.g. Honda"
+                value={selectedManufacturer()}
+                onInput={(e) => setSelectedManufacturer(e.currentTarget.value)}
+                onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+                fullWidth
+              />
+            </div>
 
-            <div class="flex gap-2">
-              <Button onClick={handleSearch} variant="primary" fullWidth>
+            <div class="flex items-center gap-3">
+              <Button onClick={handleSearch} variant="primary" size="md" class="min-w-[100px]">
                 Search
               </Button>
-              <Button onClick={handleReset} variant="ghost">
+              <Button onClick={handleReset} variant="ghost" size="md" class="min-w-[100px]">
                 Reset
               </Button>
             </div>
           </div>
 
-          <div class="flex justify-end pt-2 border-t border-f1-carbon-light">
+          <div class="flex justify-end pt-4 border-t border-f1-carbon-light">
             <Button onClick={handleAdd} variant="secondary">
               + Add New Part
             </Button>

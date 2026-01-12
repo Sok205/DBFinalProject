@@ -18,7 +18,7 @@ const Input: Component<InputProps> = (props) => {
       )}
       <input
         class={`
-          w-full px-4 py-2.5
+          w-full px-4 py-2.5 text-sm
           bg-f1-carbon border border-f1-carbon-light
           rounded
           text-white placeholder-f1-silver/50

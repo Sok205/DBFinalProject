@@ -16,7 +16,7 @@ const variantClasses: Record<ButtonVariant, string> = {
     bg-f1-red hover:bg-f1-red-dark
     text-white font-semibold
     shadow-f1 hover:shadow-f1-hover
-    border-none
+    border border-transparent
   `,
   secondary: `
     bg-f1-carbon hover:bg-f1-carbon-light
@@ -27,6 +27,7 @@ const variantClasses: Record<ButtonVariant, string> = {
     bg-status-critical hover:bg-status-critical-dark
     text-white font-semibold
     shadow-lg
+    border border-transparent
   `,
   ghost: `
     bg-transparent hover:bg-f1-carbon
