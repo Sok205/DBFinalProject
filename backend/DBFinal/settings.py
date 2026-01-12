@@ -48,6 +48,10 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^ya+jkqajri5=xxrv(gm!=#jch
 DEBUG = os.getenv('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',')
+if os.getenv('RAILWAY_PUBLIC_DOMAIN'):
+    ALLOWED_HOSTS.append(os.getenv('RAILWAY_PUBLIC_DOMAIN'))
+    ALLOWED_HOSTS.append('.railway.app')
+    ALLOWED_HOSTS.append('*')
 
 
 # Application definition
