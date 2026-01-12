@@ -45,13 +45,12 @@ fi
 
 echo "Running migrations..."
 if [ "$FORCE_MIGRATE" = "true" ]; then
-    echo "!!! FORCE_MIGRATE is true. Safety-clearing garage migration history (faked) !!!"
-    python manage.py migrate garage zero --noinput --fake
+    echo "!!! FORCE_MIGRATE is true. NUKING DATABASE SCHEMA FOR FRESH START !!!"
+    python manage.py shell -c "from django.db import connection; cursor = connection.cursor(); cursor.execute('DROP SCHEMA public CASCADE; CREATE SCHEMA public; GRANT ALL ON SCHEMA public TO public;'); print('Schema wiped!')"
 fi
 
-# We use --fake-initial to allow Django to skip table creation if they somehow exist, 
-# or create them if they don't, while keeping the migration history in sync.
-python manage.py migrate --noinput --fake-initial
+# Run migrate without --fake-initial to ensure tables are actually created
+python manage.py migrate --noinput
 
 echo "Migration status:"
 python manage.py showmigrations garage
