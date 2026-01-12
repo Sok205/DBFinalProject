@@ -13,15 +13,18 @@ host = os.getenv('DB_HOST', 'localhost')
 port = int(os.getenv('DB_PORT', 5432))
 
 if db_url:
+    print("Found DATABASE_URL, parsing...")
     parsed = urlparse(db_url)
     host = parsed.hostname
     port = parsed.port or 5432
+else:
+    print("DATABASE_URL not found in environment.")
 
-if not host:
-    print("No database host defined, skipping wait...")
-    exit(0)
+if not host or host == 'localhost':
+    print("WARNING: No remote database host defined. If you are on Railway, ensure DATABASE_URL is connected.")
+    print(f"Falling back to host: {host}, port: {port}")
 
-print(f"Waiting for database at {host}:{port}...")
+print(f"Waiting for database connection at {host}:{port}...")
 start_time = time.time()
 while time.time() - start_time < 60:  # Timeout after 60 seconds
     try:
