@@ -1,19 +1,43 @@
 #!/bin/sh
 
-# Wait for database - support both DATABASE_URL and individual env vars
-if [ -n "$DATABASE_URL" ]; then
-    # Use Python to accurately parse the DATABASE_URL
-    DB_HOST=$(python3 -c "from urllib.parse import urlparse; print(urlparse('$DATABASE_URL').hostname)")
-    DB_PORT=$(python3 -c "from urllib.parse import urlparse; print(urlparse('$DATABASE_URL').port or 5432)")
-fi
+# Wait for database using Python for robust connection testing
+echo "Checking database connection..."
+python3 - << END
+import os
+import socket
+import time
+from urllib.parse import urlparse
 
-echo "Waiting for postgres at $DB_HOST:$DB_PORT..."
-# If DB_HOST is still empty (e.g. DATABASE_URL was invalid), skip nc to avoid hanging
-if [ -n "$DB_HOST" ]; then
-    while ! nc -z $DB_HOST $DB_PORT; do
-      sleep 0.1
-    done
-    echo "PostgreSQL started"
+db_url = os.getenv('DATABASE_URL')
+host = os.getenv('DB_HOST', 'localhost')
+port = int(os.getenv('DB_PORT', 5432))
+
+if db_url:
+    parsed = urlparse(db_url)
+    host = parsed.hostname
+    port = parsed.port or 5432
+
+if not host:
+    print("No database host defined, skipping wait...")
+    exit(0)
+
+print(f"Waiting for database at {host}:{port}...")
+start_time = time.time()
+while time.time() - start_time < 60:  # Timeout after 60 seconds
+    try:
+        with socket.create_connection((host, port), timeout=2):
+            print("Database is up!")
+            exit(0)
+    except (socket.error, socket.timeout):
+        time.sleep(1)
+
+print("Database connection timed out!")
+exit(1)
+END
+
+if [ $? -ne 0 ]; then
+    echo "Database connection failed. Exiting."
+    exit 1
 fi
 
 echo "Running migrations..."
