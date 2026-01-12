@@ -1,6 +1,6 @@
-import { Component, createSignal, Show } from 'solid-js';
+import { Component, createSignal } from 'solid-js';
 import type { Part } from '../types/models';
-import { Button, Input, Select } from './ui';
+import { Button, Input } from './ui';
 
 interface PartFormProps {
     initialData?: Partial<Part>;
