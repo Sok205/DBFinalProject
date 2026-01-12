@@ -21,7 +21,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'car',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -34,7 +33,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'car_part',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -45,7 +43,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'car_session',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -57,7 +54,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'garage',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -69,7 +65,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'garage_bay',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -83,7 +78,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'part',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -97,7 +91,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'person',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -110,7 +103,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'session',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -123,7 +115,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'team',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -136,7 +127,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'telemetry_session',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -147,7 +137,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'work_assignment',
-                'managed': False,
             },
         ),
         migrations.CreateModel(
@@ -160,7 +149,6 @@ class Migration(migrations.Migration):
             ],
             options={
                 'db_table': 'work_order',
-                'managed': False,
             },
         ),
     ]
