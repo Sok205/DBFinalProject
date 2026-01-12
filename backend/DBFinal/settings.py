@@ -22,20 +22,17 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(BASE_DIR / '.env')
 
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
+SECRET_KEY = os.getenv('SECRET_KEY')
+if not SECRET_KEY and os.getenv('DEBUG', 'True') == 'False':
+    raise EOFError("SECRET_KEY must be set in production environment")
+SECRET_KEY = SECRET_KEY or 'django-insecure-^ya+jkqajri5=xxrv(gm!=#jch)p$#8&os66&b7z1w)!i*zdvl'
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', 'django-insecure-^ya+jkqajri5=xxrv(gm!=#jch)p$#8&os66&b7z1w)!i*zdvl')
-
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv('DEBUG', 'True') == 'True'
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', 'localhost,127.0.0.1,0.0.0.0').split(',')
-if os.getenv('RAILWAY_PUBLIC_DOMAIN'):
-    ALLOWED_HOSTS.append(os.getenv('RAILWAY_PUBLIC_DOMAIN'))
-    ALLOWED_HOSTS.append('.railway.app')
-    ALLOWED_HOSTS.append('*')
+RAILWAY_PUBLIC_DOMAIN = os.getenv('RAILWAY_PUBLIC_DOMAIN')
+if RAILWAY_PUBLIC_DOMAIN:
+    ALLOWED_HOSTS.append(RAILWAY_PUBLIC_DOMAIN)
 
 
 # Application definition
@@ -203,6 +200,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.OrderingFilter',
         'rest_framework.filters.SearchFilter',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 50,
