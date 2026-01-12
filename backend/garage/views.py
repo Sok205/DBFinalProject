@@ -51,7 +51,7 @@ class CarViewSet(viewsets.ReadOnlyModelViewSet):
     ordering_fields = ['car_number', 'status']
 
 
-class PartViewSet(viewsets.ReadOnlyModelViewSet):
+class PartViewSet(viewsets.ModelViewSet):
     queryset = Part.objects.prefetch_related('car_parts').all()
     serializer_class = PartSerializer
     filterset_class = PartFilter
