@@ -3,7 +3,7 @@ from rest_framework.routers import DefaultRouter
 from .views import (
     TeamViewSet, CarViewSet, PartViewSet, CarPartViewSet,
     PersonViewSet, GarageViewSet, GarageBayViewSet,
-    SessionViewSet, CarSessionViewSet
+    SessionViewSet, CarSessionViewSet, health_check
 )
 
 router = DefaultRouter()
@@ -18,5 +18,6 @@ router.register(r'sessions', SessionViewSet, basename='session')
 router.register(r'car-sessions', CarSessionViewSet, basename='car-session')
 
 urlpatterns = [
+    path('health/', health_check, name='health_check'),
     path('', include(router.urls)),
 ]

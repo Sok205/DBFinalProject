@@ -8,6 +8,11 @@ from .serializers import (
     CarPartDetailSerializer, PersonSerializer, GarageSerializer,
     GarageBaySerializer, SessionSerializer, CarSessionSerializer
 )
+from django.http import HttpResponse
+
+
+def health_check(request):
+    return HttpResponse("OK", content_type="text/plain")
 
 
 class PartFilter(FilterSet):
