@@ -51,6 +51,11 @@ class PartSerializer(serializers.ModelSerializer):
     def get_is_installed(self, obj):
         return obj.car_parts.filter(removed_at__isnull=True).exists()
 
+    def validate_fia_lifecycle_limit(self, value):
+        if value is not None and value < 0:
+            raise serializers.ValidationError("FIA lifecycle limit cannot be negative.")
+        return value
+
 
 class CarPartSerializer(serializers.ModelSerializer):
     car_number = serializers.IntegerField(source='car.car_number', read_only=True)
