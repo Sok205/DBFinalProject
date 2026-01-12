@@ -45,8 +45,8 @@ fi
 
 echo "Running migrations..."
 if [ "$FORCE_MIGRATE" = "true" ]; then
-    echo "!!! FORCE_MIGRATE is true. Resetting all garage migrations !!!"
-    python manage.py migrate garage zero --noinput
+    echo "!!! FORCE_MIGRATE is true. Safety-clearing garage migration history (faked) !!!"
+    python manage.py migrate garage zero --noinput --fake
 fi
 
 # We use --fake-initial to allow Django to skip table creation if they somehow exist, 
