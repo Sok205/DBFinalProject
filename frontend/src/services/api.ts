@@ -48,6 +48,18 @@ export const fetchPart = async (id: number): Promise<Part> => {
   return api.get(`/api/parts/${id}/`);
 };
 
+export const createPart = async (data: Partial<Part>): Promise<Part> => {
+  return api.post('/api/parts/', data);
+};
+
+export const updatePart = async (id: number, data: Partial<Part>): Promise<Part> => {
+  return api.patch(`/api/parts/${id}/`, data);
+};
+
+export const deletePart = async (id: number): Promise<void> => {
+  return api.delete(`/api/parts/${id}/`);
+};
+
 export const fetchLifecycleWarnings = async (): Promise<Part[]> => {
   return api.get('/api/parts/lifecycle_warnings/');
 };

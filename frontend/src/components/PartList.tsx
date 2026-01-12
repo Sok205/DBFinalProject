@@ -1,8 +1,9 @@
 import { Component, createSignal, For, Show, onMount } from 'solid-js';
 import type { Part, PartFilters } from '../types/models';
-import { fetchParts } from '../services/api';
-import { Button, Input, Spinner } from './ui';
+import { fetchParts, createPart, updatePart, deletePart } from '../services/api';
+import { Button, Input, Spinner, Modal } from './ui';
 import PartCard from './PartCard';
+import PartForm from './PartForm';
 
 const PartList: Component = () => {
   const [parts, setParts] = createSignal<Part[]>([]);
@@ -12,6 +13,11 @@ const PartList: Component = () => {
   const [searchTerm, setSearchTerm] = createSignal('');
   const [selectedType, setSelectedType] = createSignal('');
   const [selectedManufacturer, setSelectedManufacturer] = createSignal('');
+
+  // Modal State
+  const [isModalOpen, setIsModalOpen] = createSignal(false);
+  const [editingPart, setEditingPart] = createSignal<Part | undefined>(undefined);
+  const [isSaving, setIsSaving] = createSignal(false);
 
   const loadParts = async () => {
     setLoading(true);
@@ -49,44 +55,93 @@ const PartList: Component = () => {
     loadParts();
   };
 
+  const handleAdd = () => {
+    setEditingPart(undefined);
+    setIsModalOpen(true);
+  };
+
+  const handleEdit = (part: Part) => {
+    setEditingPart(part);
+    setIsModalOpen(true);
+  };
+
+  const handleDelete = async (part: Part) => {
+    if (!confirm(`Are you sure you want to delete ${part.part_type} ${part.serial_number}?`)) {
+      return;
+    }
+    try {
+      await deletePart(part.part_id);
+      await loadParts();
+    } catch (err) {
+      console.error('Failed to delete part:', err);
+      // Could add toast notification here
+    }
+  };
+
+  const handleSave = async (data: Partial<Part>) => {
+    setIsSaving(true);
+    try {
+      if (editingPart()) {
+        await updatePart(editingPart()!.part_id, data);
+      } else {
+        await createPart(data);
+      }
+      setIsModalOpen(false);
+      await loadParts();
+    } catch (err) {
+      console.error('Failed to save part:', err);
+      // Could add toast notification here
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       {/* Filter Bar */}
       <div class="bg-f1-carbon border border-f1-carbon-light rounded-lg p-4 sm:p-6 mb-6 shadow-card">
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Input
-            type="text"
-            placeholder="Search by serial, type..."
-            value={searchTerm()}
-            onInput={(e) => setSearchTerm(e.currentTarget.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            fullWidth
-          />
+        <div class="flex flex-col gap-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <Input
+              type="text"
+              placeholder="Search by serial, type..."
+              value={searchTerm()}
+              onInput={(e) => setSearchTerm(e.currentTarget.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              fullWidth
+            />
 
-          <Input
-            type="text"
-            placeholder="Filter by type"
-            value={selectedType()}
-            onInput={(e) => setSelectedType(e.currentTarget.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            fullWidth
-          />
+            <Input
+              type="text"
+              placeholder="Filter by type"
+              value={selectedType()}
+              onInput={(e) => setSelectedType(e.currentTarget.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              fullWidth
+            />
 
-          <Input
-            type="text"
-            placeholder="Filter by manufacturer"
-            value={selectedManufacturer()}
-            onInput={(e) => setSelectedManufacturer(e.currentTarget.value)}
-            onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
-            fullWidth
-          />
+            <Input
+              type="text"
+              placeholder="Filter by manufacturer"
+              value={selectedManufacturer()}
+              onInput={(e) => setSelectedManufacturer(e.currentTarget.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
+              fullWidth
+            />
 
-          <div class="flex gap-2">
-            <Button onClick={handleSearch} variant="primary" fullWidth>
-              Search
-            </Button>
-            <Button onClick={handleReset} variant="ghost">
-              Reset
+            <div class="flex gap-2">
+              <Button onClick={handleSearch} variant="primary" fullWidth>
+                Search
+              </Button>
+              <Button onClick={handleReset} variant="ghost">
+                Reset
+              </Button>
+            </div>
+          </div>
+
+          <div class="flex justify-end pt-2 border-t border-f1-carbon-light">
+            <Button onClick={handleAdd} variant="secondary">
+              + Add New Part
             </Button>
           </div>
         </div>
@@ -127,7 +182,13 @@ const PartList: Component = () => {
         {/* Grid */}
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <For each={parts()}>
-            {(part) => <PartCard part={part} />}
+            {(part) => (
+              <PartCard
+                part={part}
+                onEdit={handleEdit}
+                onDelete={handleDelete}
+              />
+            )}
           </For>
         </div>
 
@@ -138,13 +199,32 @@ const PartList: Component = () => {
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z" />
             </svg>
             <h3 class="text-xl font-bold text-white mb-2">No Parts Found</h3>
-            <p class="text-f1-silver mb-6">Try adjusting your search filters</p>
-            <Button onClick={handleReset} variant="secondary">
-              Clear Filters
-            </Button>
+            <p class="text-f1-silver mb-6">Try adjusting your search filters or add a new part</p>
+            <div class="flex gap-3 justify-center">
+              <Button onClick={handleReset} variant="secondary">
+                Clear Filters
+              </Button>
+              <Button onClick={handleAdd} variant="primary">
+                Add New Part
+              </Button>
+            </div>
           </div>
         </Show>
       </Show>
+
+      {/* CRUD Modal */}
+      <Modal
+        isOpen={isModalOpen()}
+        onClose={() => setIsModalOpen(false)}
+        title={editingPart() ? 'Edit Part' : 'Add New Part'}
+      >
+        <PartForm
+          initialData={editingPart()}
+          onSubmit={handleSave}
+          onCancel={() => setIsModalOpen(false)}
+          isLoading={isSaving()}
+        />
+      </Modal>
     </div>
   );
 };
