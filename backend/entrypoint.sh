@@ -44,6 +44,10 @@ if [ $? -ne 0 ]; then
 fi
 
 echo "Running migrations..."
+if [ "$FORCE_MIGRATE" = "true" ]; then
+    echo "FORCE_MIGRATE is true. Resetting garage migration state..."
+    python manage.py migrate garage zero --noinput
+fi
 python manage.py migrate --noinput
 
 echo "Collecting static files..."
