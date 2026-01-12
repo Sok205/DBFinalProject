@@ -9,6 +9,7 @@ class Team(models.Model):
 
     class Meta:
         db_table = 'team'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -98,6 +99,7 @@ class Part(models.Model):
 
     class Meta:
         db_table = 'part'
+        ordering = ['part_type', 'serial_number']
 
     def __str__(self):
         return f"{self.part_type} - {self.serial_number}"
