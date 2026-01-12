@@ -157,6 +157,27 @@
     @apply absolute h-0.5 bg-gradient-to-r from-transparent via-f1-red to-transparent opacity-30;
     animation: speed-lines 2s linear infinite;
   }
+
+  /* Intro Animation Keyframes */
+  @keyframes slideRight {
+    0% { transform: translateX(-50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideLeft {
+    0% { transform: translateX(50px); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    0% { transform: translateY(30px); opacity: 0; }
+    100% { transform: translateY(0); opacity: 1; }
+  }
+
+  @keyframes shimmer {
+    0% { transform: skewX(-20deg) translateX(-150%); }
+    100% { transform: skewX(-20deg) translateX(150%); }
+  }
 }
 
 @layer utilities {
