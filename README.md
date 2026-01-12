@@ -69,14 +69,41 @@ The backend API will be available at `http://localhost:8000`
 
 The frontend will be available at `http://localhost:5173`
 
-## Development
+## Production Architecture
 
-- Backend runs on port `8000`
-- Frontend runs on port `5173`
-- CORS is configured to allow requests from the frontend to the backend
-- API requests can be made using the `api` utility in `frontend/src/config.ts`
+The application is designed for a professional, scalable deployment:
 
-## API Configuration
+- **Frontend**: [Solid.js](https://www.solidjs.com/) SPA served by **Nginx** for high performance and static asset caching.
+- **Backend**: [Django REST Framework](https://www.django-rest-framework.org/) served by **Gunicorn** for a robust, production-ready WSGI server.
+- **Static Files**: Managed via **WhiteNoise** with compression and persistent caching.
+- **Infrastructure**: Containerized using **Docker** and **Docker Compose**, optimized for **Railway** cloud deployment.
+- **Database**: **PostgreSQL** for reliable relational data storage.
 
-The frontend is configured to connect to the backend API at `http://localhost:8000` by default.
-You can change this by setting the `VITE_API_URL` environment variable in `frontend/.env`
+## Deployment
+
+### Railway (Recommended)
+
+This project is configured for automated deployment via Railway. Every push to `main` triggers a rebuild of both services.
+
+For detailed, step-by-step instructions on deploying to Railway or other platforms, see the [Docker Deployment Guide](DOCKER.md).
+
+### Quick Production Launch
+
+If you have Docker installed, you can launch the production build locally:
+
+```bash
+docker-compose -f docker-compose.prod.yml --env-file .env.production up --build
+```
+
+### Environment Variables
+
+| Service | Key | Purpose |
+|---------|-----|---------|
+| **Backend** | `DATABASE_URL` | PostgreSQL connection string |
+| **Backend** | `DEBUG` | Set to `False` in production |
+| **Backend** | `FRONTEND_URL` | Frontend origin for CORS |
+| **Frontend**| `VITE_API_URL` | URL of the Backend API |
+
+---
+
+Developed for the F1 Garage Management simulation. 🏁🏎️
