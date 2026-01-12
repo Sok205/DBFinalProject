@@ -37,7 +37,7 @@ const IntroAnimation: Component<IntroAnimationProps> = (props) => {
                        The official logo has a very strong slant.
                     */}
                     <svg
-                        viewBox="0 0 280 80"
+                        viewBox="0 0 120 30"
                         fill="none"
                         xmlns="http://www.w3.org/2000/svg"
                         class="w-full h-full drop-shadow-[0_0_25px_rgba(225,6,0,0.6)]"
@@ -50,52 +50,36 @@ const IntroAnimation: Component<IntroAnimationProps> = (props) => {
                         </defs>
 
                         {/* 
-                            F1 Logo - Two similar shapes
-                            Top bar: Full-size parallelogram with curved left edge
-                            Bottom bar: Same shape, scaled down (~60%) and positioned below
+                            Official F1 Logo Paths
+                            Recovered from F1.svg (Wikimedia Commons)
+                            Coordinate system: 0 0 120 30
                         */}
+                        <g>
 
-                        {/* Top bar - Curved banana/gun shape */}
-                        <path
-                            d="M22 28
-                               C22 18 30 10 42 10
-                               L175 10
-                               L160 28
-                               L50 28
-                               C38 28 30 32 28 38
-                               L28 40
-                               L12 40
-                               C10 36 12 30 22 28
-                               Z"
-                            fill="url(#f1-gradient)"
-                            class="opacity-0 animate-[slideLeft_0.5s_cubic-bezier(0.4,0,0.2,1)_0.2s_forwards]"
-                        />
+                            {/* Top/Left "F" Structure */}
+                            <path
+                                d="M31.1518125,16.253125 C27.8774375,19.3425 20.7530625,26.263125 16.9130625,30 L-6.25e-05,30 C-6.25e-05,30 13.5524375,16.486875 21.0849375,9.0725 C28.8455625,1.685 32.7143125,0 46.9486875,0 L98.7643125,0 L87.5449375,11.21875 L48.0011875,11.21875 C37.9993125,11.21875 35.7518125,11.911875 31.1518125,16.253125 Z"
+                                fill="url(#f1-gradient)"
+                                class="opacity-0 animate-[slideLeft_0.5s_cubic-bezier(0.4,0,0.2,1)_0.2s_forwards]"
+                            />
 
-                        {/* Bottom bar - Same curved shape, scaled down */}
-                        <path
-                            d="M18 58
-                               C18 50 24 44 34 44
-                               L115 44
-                               L103 58
-                               L40 58
-                               C30 58 24 62 22 66
-                               L22 68
-                               L10 68
-                               C8 64 10 60 18 58
-                               Z"
-                            fill="url(#f1-gradient)"
-                            class="opacity-0 animate-[slideRight_0.5s_cubic-bezier(0.4,0,0.2,1)_0.4s_forwards]"
-                        />
+                            {/* Bottom Bar - The middle crossbar */}
+                            <path
+                                d="M85.6986875,13.065 L49.3818125,13.065 C38.3136875,13.065 36.3768125,13.651875 31.6361875,18.3925 C27.2024375,22.82625 20.0005625,30 20.0005625,30 L35.7324375,30 L39.4855625,26.246875 C41.9530625,23.779375 43.2255625,23.52375 48.4068125,23.52375 L75.2405625,23.52375 L85.6986875,13.065 Z"
+                                fill="url(#f1-gradient)"
+                                class="opacity-0 animate-[slideRight_0.5s_cubic-bezier(0.4,0,0.2,1)_0.4s_forwards]"
+                            />
 
-                        {/* The "1" - diagonal pillar on the right */}
-                        <path
-                            d="M180 8 L210 8 L195 62 L165 62 Z"
-                            fill="url(#f1-gradient)"
-                            class="opacity-0 animate-[slideUp_0.5s_cubic-bezier(0.4,0,0.2,1)_0.5s_forwards]"
-                        />
+                            {/* The "1" Pillar */}
+                            <path
+                                d="M89.9999375,30 L119.999937,0 L101.943687,0 L71.9443125,30 L89.9999375,30 Z"
+                                fill="url(#f1-gradient)"
+                                class="opacity-0 animate-[slideUp_0.5s_cubic-bezier(0.4,0,0.2,1)_0.5s_forwards]"
+                            />
+                        </g>
 
                         {/* TM Mark */}
-                        <text x="212" y="68" fill="white" font-family="Arial" font-weight="bold" font-size="8" class="opacity-0 animate-[fadeIn_1s_ease_1.0s_forwards]">TM</text>
+                        <text x="122" y="30" fill="white" font-family="Arial" font-weight="bold" font-size="3" class="opacity-0 animate-[fadeIn_1s_ease_1.0s_forwards]">TM</text>
                     </svg>
 
                 </div>
